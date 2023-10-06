@@ -26,7 +26,7 @@ public class PricesControllerAdvice {
 	    errors.add(error.getDefaultMessage());
 	}
 
-	ValidationErrorResponse errorResponse = new ValidationErrorResponse(errors);
+	ValidationErrorResponse errorResponse = new ValidationErrorResponse(HttpStatus.BAD_REQUEST.value(), errors);
 	return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -34,6 +34,6 @@ public class PricesControllerAdvice {
     public ResponseEntity<ValidationErrorResponse> handlerPriceSNotFoundException(PricesNotFoundException exception){
 	List<String> errors = List.of(exception.getMessage());
 
-	return ResponseEntity.badRequest().body(ValidationErrorResponse.builder().errors(errors).build());
+	return ResponseEntity.ok(ValidationErrorResponse.builder().errors(errors).build());
     }
 }

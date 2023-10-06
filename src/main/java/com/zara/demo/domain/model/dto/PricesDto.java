@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record PricesDto(Long productId, Long brandId, String nameBrand, BigDecimal price, LocalDateTime startDate,
+public record PricesDto(Long productId, Long brandId, BigDecimal price, LocalDateTime startDate, Long priceListId,
 	LocalDateTime endDate) implements Serializable {
 
 }
