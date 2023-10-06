@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 @AllArgsConstructor
 public class RetrievePricesUseCaseImpl implements RetrievePricesUseCase {
@@ -23,11 +22,15 @@ public class RetrievePricesUseCaseImpl implements RetrievePricesUseCase {
 	List<Prices> pricesList = pricesRepositoryPort.retrievePrices(applicationDate, brandId, productId);
 
 	if (pricesList.isEmpty()) {
-	    throw new PricesNotFoundException(PricesConstant.NOT_FOUND);
+	    throw new PricesNotFoundException(
+		    String.format(PricesConstant.NOT_FOUND, applicationDate, brandId, productId));
 	}
 
-	Prices prices = pricesList.stream().max(Comparator.comparing(Prices::getPriority)).stream().findFirst().get();
-	return new PricesDto(prices.getProduct().getId(), prices.getBrand().getId(),
-		prices.getBrand().getName(), prices.getPrice(), prices.getStartDate(), prices.getEndDate());
+	Prices prices = pricesList.stream()
+		.max(Comparator.comparing(Prices::getPriority))
+		.orElseThrow(() -> new PricesNotFoundException(String.format(PricesConstant.NOT_FOUND, applicationDate, brandId, productId)));
+
+	return new PricesDto(prices.getProduct().getId(), prices.getBrand().getId(), prices.getPrice(), prices.getStartDate(), prices.getPriceList()
+		.getId(), prices.getEndDate());
     }
 }
