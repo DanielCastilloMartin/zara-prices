@@ -1,5 +1,6 @@
 package com.zara.demo.infrastructure.controllers;
 
+import com.zara.demo.infrastructure.exception.PricesNotFoundException;
 import com.zara.demo.infrastructure.exception.ValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,6 @@ import java.util.List;
 @RestControllerAdvice
 public class PricesControllerAdvice {
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
 	List<String> errors = new ArrayList<>();
@@ -28,5 +28,12 @@ public class PricesControllerAdvice {
 
 	ValidationErrorResponse errorResponse = new ValidationErrorResponse(errors);
 	return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PricesNotFoundException.class)
+    public ResponseEntity<ValidationErrorResponse> handlerPriceSNotFoundException(PricesNotFoundException exception){
+	List<String> errors = List.of(exception.getMessage());
+
+	return ResponseEntity.badRequest().body(ValidationErrorResponse.builder().errors(errors).build());
     }
 }

@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 @Data
 public class Prices {
 
-    private Long idProduct;
-    private Long idBrand;
-    private Long idPriceList;
+    private Product product;
+    private Brand brand;
+    private PriceList priceList;
     private LocalDateTime endDate;
     private LocalDateTime startDate;
     private BigDecimal price;
-    private boolean priority;
+    private Integer priority;
     private String currency;
 }

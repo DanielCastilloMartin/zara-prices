@@ -5,6 +5,7 @@ spring:
     url: jdbc:h2:mem:~/zaradb
     platform: h2
     password: ''
+
   h2:
     console:
       enabled: true
@@ -15,9 +16,11 @@ spring:
       allowed-origins: "*"
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
     show-sql: true
+    ddl-auto: create-drop
+  sql:
+    init:
+      mode: always
 
 server:
   port: 8086
